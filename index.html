@@ -4,53 +4,235 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locket Gold Pro - Hoàng Nghĩa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #F2C94C; --bg: #ffffff; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; text-align: center; }
-        #overlay { position: fixed; inset: 0; background: #fff; z-index: 99; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-        .author-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--primary); margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .start-btn { background: #000; color: #fff; padding: 15px 40px; border-radius: 30px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .particle { position: fixed; top: -20px; animation: fall linear infinite; z-index: 1; pointer-events: none; }
-        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
-        .card { background: #f9f9f9; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); z-index: 10; width: 85%; max-width: 350px; }
+        :root {
+            --primary: #F2C94C;
+            --pink-main: #FF69B4;
+            --pink-light: #FFB6C1;
+            --zalo: #0068FF;
+            --bg-color: #FFF5F7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: #1D1D1F; overflow-x: hidden; }
+
+        /* --- MÀN HÌNH ĐẦU (INTRO) CỰC ĐẸP --- */
+        #welcome-screen {
+            position: fixed; inset: 0; 
+            background: #000; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; transition: opacity 1s ease;
+        }
+
+        .bg-blur {
+            position: absolute; inset: 0;
+            background: url('https://surprised-scarlet-ycf0c2mq1w.edgeone.app/IMG_3198.jpeg') no-repeat center center;
+            background-size: cover; filter: blur(10px) brightness(0.4);
+            transform: scale(1.1);
+        }
+
+        /* Hiệu ứng hạt lấp lánh */
+        .sparkle-bg { position: absolute; inset: 0; z-index: 1001; pointer-events: none; }
+
+        .welcome-content { position: relative; z-index: 1002; text-align: center; width: 100%; }
+
+        .avatar-wrap {
+            position: relative; width: 180px; height: 180px; margin: 0 auto 30px;
+        }
+        .avatar-wrap::before {
+            content: ''; position: absolute; inset: -10px;
+            background: linear-gradient(45deg, #FF69B4, #F2C94C, #FF1493, #FFD700);
+            border-radius: 50%; animation: rotate 4s linear infinite;
+            box-shadow: 0 0 20px var(--pink-main);
+        }
+
+        .welcome-img { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            position: relative; z-index: 2; object-fit: cover; border: 4px solid #000;
+        }
+
+        .welcome-name {
+            font-size: 32px; font-weight: 900; letter-spacing: 5px; color: #fff;
+            margin-bottom: 40px; text-transform: uppercase;
+            text-shadow: 0 0 20px var(--pink-main), 0 0 40px var(--pink-main);
+        }
+
+        /* Nút bấm mới */
+        .start-btn { 
+            background: linear-gradient(45deg, #fff, var(--pink-light)); color: #D63384; 
+            padding: 22px 40px; border-radius: 50px; border: none; font-size: 16px; 
+            font-weight: 900; cursor: pointer; transition: 0.4s;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.5);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(255, 105, 180, 0.8); }
+
+        /* --- HIỆU ỨNG HOA NỞ --- */
+        #flower-transition {
+            position: absolute; top: 50%; left: 50%; width: 0; height: 0; 
+            background: radial-gradient(circle, #FF69B4, #F2C94C);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            z-index: 1010; pointer-events: none; display: none;
+        }
+        .bloom-animation { display: block !important; animation: flower-bloom 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+
+        /* --- HIỆU ỨNG YÊU EM --- */
+        .love-note {
+            position: fixed; bottom: -100px; z-index: 9999; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center;
+            animation: flyUp 4s ease-out forwards;
+        }
+        .love-note span {
+            font-family: 'Pacifico', cursive; color: #fff; font-size: 26px;
+            text-shadow: 0 0 15px #FF1493; margin-top: 10px;
+        }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+        @keyframes flower-bloom {
+            0% { width: 0; height: 0; border-radius: 50%; opacity: 1; }
+            100% { width: 400vmax; height: 400vmax; border-radius: 50%; opacity: 1; }
+        }
+        @keyframes flyUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-130vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- TRANG CHỦ (GIỮ NGUYÊN NỘI DUNG) --- */
+        .container { max-width: 480px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
+        header { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 30px 0; }
+        .author-logo { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(255,105,180,0.3); object-fit: cover; }
+        .logo-text { font-weight: 800; font-size: 24px; text-transform: uppercase; }
+        .logo-text span { color: var(--pink-main); }
+        .card { background: #fff; border-radius: 30px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(255,182,193,0.3); }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 25px; background: #000; margin-bottom: 15px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .btn-zalo { background: linear-gradient(45deg, var(--zalo), #66a6ff); color: white; border-radius: 20px; text-decoration: none; display: block; padding: 18px; font-weight: 800; text-align: center; }
+        footer { text-align: center; font-size: 11px; color: #A1A1A6; margin: 40px 0; }
+
+        .sakura { position: fixed; top: -20px; z-index: 5; pointer-events: none; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div id="overlay">
-        <img src="https://github.com/hoangvannghia8668-crypto.png" class="author-img">
-        <h2 style="margin-bottom: 25px;">HOÀNG NGHĨA</h2>
-        <button class="start-btn" onclick="start()">KHÁM PHÁ NGAY</button>
+
+    <div id="welcome-screen">
+        <div class="bg-blur"></div>
+        <div class="sparkle-bg" id="sparkles"></div>
+        <div id="flower-transition"></div>
+        <div class="welcome-content" id="welcome-content">
+            <div class="avatar-wrap">
+                <img src="https://surprised-scarlet-ycf0c2mq1w.edgeone.app/IMG_3198.jpeg" class="welcome-img">
+            </div>
+            <div class="welcome-name">HOÀNG NGHĨA</div>
+            <button class="start-btn" onclick="startApp()">Xem Hướng dẫn để có locket gold</button>
+        </div>
     </div>
 
-    <div class="card">
-        <h1 style="font-size: 24px; margin-bottom: 10px;">LOCKET GOLD PRO</h1>
-        <p style="color: #666; font-weight: 500;">Bản quyền: Hoàng Nghĩa</p>
+    <div id="heart-container"></div>
+
+    <div class="container">
+        <header>
+            <img src="https://surprised-scarlet-ycf0c2mq1w.edgeone.app/IMG_3198.jpeg" alt="Hoàng Nghĩa" class="author-logo">
+            <div class="logo-text">Locket <span>Gold</span> Pro</div>
+        </header>
+
+        <div class="card">
+            <h2 style="color: var(--pink-main);">Cách Up Locket Gold 2026</h2>
+            <p style="font-size: 14.5px; color: #444; margin-top:10px;">Locket Gold mang lại trải nghiệm tuyệt vời với các tính năng không giới hạn. Xem video bên dưới nhé!</p>
+        </div>
+
+        <div class="card">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/aqf2I3TQ3fs" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <div style="background: #FFF0F6; padding: 15px; border-radius: 15px; border: 1px solid var(--pink-light); margin-bottom: 15px;">
+                <div id="moduleUrl" style="font-family: monospace; font-size: 11px; word-break: break-all; color: var(--pink-main);">https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule</div>
+            </div>
+            <button onclick="copyText()" style="width: 100%; padding: 15px; border-radius: 15px; border: none; background: #000; color: #fff; font-weight: 700; cursor: pointer;">SAO CHÉP LINK MODULE</button>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <a href="https://zalo.me/0339283222" target="_blank" class="btn-zalo">CHAT VỚI NGHĨA QUA ZALO</a>
+        </div>
+
+        <footer>© 2026 HOÀNG NGHĨA • PREMIUM SUPPORT</footer>
     </div>
 
-    <audio id="bgMusic" loop>
+    <audio id="myMusic" loop>
         <source src="Audios_20260512_0406.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        function start() {
-            const overlay = document.getElementById('overlay');
-            const music = document.getElementById('bgMusic');
-            
-            overlay.style.opacity = '0';
-            setTimeout(() => { overlay.style.display = 'none'; }, 500);
-            
-            music.play().catch(err => console.log("Cần nhấn nút để chạy nhạc"));
+        // Tạo hạt lấp lánh
+        function createSparkles() {
+            const container = document.getElementById('sparkles');
+            for(let i=0; i<40; i++) {
+                const s = document.createElement('div');
+                s.style.position = 'absolute';
+                s.style.width = Math.random() * 4 + 'px';
+                s.style.height = s.style.width;
+                s.style.background = '#fff';
+                s.style.borderRadius = '50%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.opacity = Math.random();
+                s.style.boxShadow = '0 0 10px #fff';
+                container.appendChild(s);
+            }
+        }
+        createSparkles();
 
-            setInterval(() => {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.innerHTML = Math.random() > 0.5 ? '❤️' : '❄️';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                p.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 5000);
-            }, 300);
+        function startApp() {
+            const flower = document.getElementById('flower-transition');
+            const screen = document.getElementById('welcome-screen');
+            const music = document.getElementById('myMusic');
+
+            flower.classList.add('bloom-animation');
+            music.play();
+
+            // Hiệu ứng "Yêu Em"
+            for(let i=0; i<15; i++) {
+                setTimeout(createLoveNote, i * 200);
+            }
+
+            setTimeout(() => {
+                screen.style.opacity = '0';
+                setTimeout(() => screen.style.display = 'none', 1000);
+            }, 1200);
+
+            setInterval(createSakura, 300);
+        }
+
+        function createLoveNote() {
+            const note = document.createElement('div');
+            note.className = 'love-note';
+            note.innerHTML = `<span style="font-size: 50px;">💖</span><span>Yêu Em</span>`;
+            note.style.left = Math.random() * 80 + 10 + 'vw';
+            note.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(note);
+            setTimeout(() => note.remove(), 4000);
+        }
+
+        function createSakura() {
+            const container = document.getElementById('heart-container');
+            const s = document.createElement('div');
+            s.className = 'sakura';
+            s.innerHTML = '🌸';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.fontSize = Math.random() * 15 + 15 + 'px';
+            s.style.animationDuration = Math.random() * 3 + 3 + 's';
+            container.appendChild(s);
+            setTimeout(() => s.remove(), 5000);
+        }
+
+        function copyText() {
+            const text = document.getElementById('moduleUrl').innerText;
+            navigator.clipboard.writeText(text).then(() => alert('Đã copy thành công!'));
         }
     </script>
 </body>
