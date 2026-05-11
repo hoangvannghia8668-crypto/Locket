@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locket Gold Pro - Hoàng Nghĩa</title>
+    <style>
+        :root { --primary: #F2C94C; --bg: #ffffff; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; text-align: center; }
+        #overlay { position: fixed; inset: 0; background: #fff; z-index: 99; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
+        .author-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--primary); margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .start-btn { background: #000; color: #fff; padding: 15px 40px; border-radius: 30px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .particle { position: fixed; top: -20px; animation: fall linear infinite; z-index: 1; pointer-events: none; }
+        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+        .card { background: #f9f9f9; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); z-index: 10; width: 85%; max-width: 350px; }
+    </style>
+</head>
+<body>
+    <div id="overlay">
+        <img src="https://github.com/hoangvannghia8668-crypto.png" class="author-img">
+        <h2 style="margin-bottom: 25px;">HOÀNG NGHĨA</h2>
+        <button class="start-btn" onclick="start()">KHÁM PHÁ NGAY</button>
+    </div>
 
+    <div class="card">
+        <h1 style="font-size: 24px; margin-bottom: 10px;">LOCKET GOLD PRO</h1>
+        <p style="color: #666; font-weight: 500;">Bản quyền: Hoàng Nghĩa</p>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="Audios_20260512_0406.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function start() {
+            const overlay = document.getElementById('overlay');
+            const music = document.getElementById('bgMusic');
+            
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+            
+            music.play().catch(err => console.log("Cần nhấn nút để chạy nhạc"));
+
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerHTML = Math.random() > 0.5 ? '❤️' : '❄️';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
